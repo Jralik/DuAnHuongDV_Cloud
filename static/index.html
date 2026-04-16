@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="General AI Trading System - Hệ thống giao dịch AI tổng hợp cho Crypto">
+    <title>Giao Dịch AI | Bảng Điều Khiển</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=5">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js"></script>
+</head>
+
+<body>
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="main-header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">AI Trading</span>
+                <span class="logo-badge">CAO CẤP</span>
+            </div>
+        </div>
+        <div class="header-center">
+            <div class="market-ticker" id="market-ticker">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator" id="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Đang kết nối...</span>
+            </div>
+            <div class="header-time" id="header-time"></div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="main-content">
+        <!-- TOP STATS BAR -->
+        <section class="stats-bar" id="stats-bar">
+            <div class="stat-card" id="stat-equity">
+                <div class="stat-label">💰 Tổng Vốn</div>
+                <div class="stat-value" id="total-equity">$10,000.00</div>
+                <div class="stat-change positive" id="equity-change">+0.00%</div>
+            </div>
+            <div class="stat-card" id="stat-pnl">
+                <div class="stat-label">📈 Lãi/Lỗ</div>
+                <div class="stat-value" id="total-pnl">$0.00</div>
+                <div class="stat-change" id="pnl-change">0.00%</div>
+            </div>
+            <div class="stat-card" id="stat-positions">
+                <div class="stat-label">📊 Vị Thế Mở</div>
+                <div class="stat-value" id="open-positions">0</div>
+                <div class="stat-sub">/ 3 tối đa</div>
+            </div>
+            <div class="stat-card" id="stat-trades">
+                <div class="stat-label">🔄 Giao Dịch</div>
+                <div class="stat-value" id="total-trades">0</div>
+                <div class="stat-sub" id="win-rate">Thắng: 0%</div>
+            </div>
+            <div class="stat-card" id="stat-signal">
+                <div class="stat-label">🤖 Tín Hiệu AI</div>
+                <div class="stat-value signal-hold" id="current-signal">GIỮ</div>
+                <div class="stat-sub" id="signal-confidence">Độ tin cậy: --</div>
+            </div>
+        </section>
+
+        <!-- MAIN GRID -->
+        <div class="dashboard-grid">
+            <!-- LEFT: CHART -->
+            <section class="panel chart-panel" id="chart-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h2 id="chart-title">BTC/USDT</h2>
+                        <div class="symbol-selector">
+                            <button class="symbol-btn active" data-symbol="BTC/USDT" id="btn-btc">BTC</button>
+                            <button class="symbol-btn" data-symbol="ETH/USDT" id="btn-eth">ETH</button>
+                        </div>
+                    </div>
+                    <div class="timeframe-selector">
+                        <button class="tf-btn" data-tf="15m">15m</button>
+                        <button class="tf-btn active" data-tf="1h">1H</button>
+                        <button class="tf-btn" data-tf="4h">4H</button>
+                        <button class="tf-btn" data-tf="1d">1D</button>
+                    </div>
+                </div>
+                <div class="chart-container" id="chart-container">
+                    <canvas id="price-chart"></canvas>
+                </div>
+                <div class="chart-indicators" id="chart-indicators">
+                    <canvas id="volume-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- RIGHT TOP: AI PANEL -->
+            <section class="panel ai-panel" id="ai-panel">
+                <div class="panel-header">
+                    <h2>🧠 AI Dự Đoán</h2>
+                    <div style="display: flex; gap: 5px;">
+                        <select id="train-days" class="select-dark" title="Dữ liệu Train">
+                            <option value="90">3 Tháng</option>
+                            <option value="180">6 Tháng</option>
+                            <option value="365">1 Năm</option>
+                        </select>
+                        <button class="btn btn-sm btn-accent" id="btn-train" onclick="trainModel()">
+                            Huấn luyện
+                        </button>
+                    </div>
+                </div>
+                <div class="ai-load-section" style="padding: 10px; display: flex; gap: 10px; border-bottom: 1px solid var(--border);">
+                     <select id="load-model-select" class="select-dark" style="flex: 1;" title="Danh sách Model đã lưu">
+                         <option value="">Chọn model...</option>
+                     </select>
+                     <button class="btn btn-sm btn-ghost" id="btn-load-model" onclick="loadSelectedModel()">Tải</button>
+                     <button class="btn btn-sm btn-sell" id="btn-delete-model" onclick="deleteSelectedModel()" style="padding: 0 8px;" title="Xóa Model">🗑️</button>
+                </div>
+                <div class="ai-content">
+                    <div class="ai-signal-display" id="ai-signal-display">
+                        <div class="ai-signal-circle" id="ai-signal-circle">
+                            <span class="ai-signal-text" id="ai-signal-text">GIỮ</span>
+                        </div>
+                        <div class="ai-confidence" id="ai-confidence-bar">
+                            <div class="confidence-label">Độ tin cậy</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidence-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="confidence-value" id="confidence-value">0%</div>
+                        </div>
+                    </div>
+                    <div class="ai-models" id="ai-models">
+                        <div class="model-item">
+                            <span class="model-name">XGBoost</span>
+                            <span class="model-pred" id="pred-xgb">--</span>
+                            <span class="model-acc" id="acc-xgb">--</span>
+                        </div>
+                        <div class="model-item">
+                            <span class="model-name">Random Forest</span>
+                            <span class="model-pred" id="pred-rf">--</span>
+                            <span class="model-acc" id="acc-rf">--</span>
+                        </div>
+                        <div class="model-item">
+                            <span class="model-name">LSTM</span>
+                            <span class="model-pred" id="pred-lstm">--</span>
+                            <span class="model-acc" id="acc-lstm">--</span>
+                        </div>
+                    </div>
+                    <div class="ai-status" id="ai-status">
+                        <span class="ai-badge untrained">Chưa train</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT BOTTOM: INDICATORS -->
+            <section class="panel indicators-panel" id="indicators-panel">
+                <div class="panel-header">
+                    <h2>📉 Chỉ Báo Kỹ Thuật</h2>
+                </div>
+                <div class="indicators-grid" id="indicators-grid">
+                    <div class="indicator-card" id="ind-rsi">
+                        <div class="ind-name">RSI (14)</div>
+                        <div class="ind-value" id="val-rsi">--</div>
+                        <div class="ind-gauge">
+                            <div class="gauge-fill" id="gauge-rsi"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-rsi">--</div>
+                    </div>
+                    <div class="indicator-card" id="ind-macd">
+                        <div class="ind-name">MACD</div>
+                        <div class="ind-value" id="val-macd">--</div>
+                        <div class="ind-bar-container">
+                            <div class="ind-bar" id="bar-macd"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-macd">--</div>
+                    </div>
+                    <div class="indicator-card" id="ind-bb">
+                        <div class="ind-name">Bollinger</div>
+                        <div class="ind-value" id="val-bb">--</div>
+                        <div class="ind-gauge">
+                            <div class="gauge-fill" id="gauge-bb"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-bb">--</div>
+                    </div>
+                    <div class="indicator-card" id="ind-adx">
+                        <div class="ind-name">ADX</div>
+                        <div class="ind-value" id="val-adx">--</div>
+                        <div class="ind-gauge">
+                            <div class="gauge-fill" id="gauge-adx"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-adx">--</div>
+                    </div>
+                    <div class="indicator-card" id="ind-stoch">
+                        <div class="ind-name">Stochastic</div>
+                        <div class="ind-value" id="val-stoch">--</div>
+                        <div class="ind-gauge">
+                            <div class="gauge-fill" id="gauge-stoch"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-stoch">--</div>
+                    </div>
+                    <div class="indicator-card" id="ind-mfi">
+                        <div class="ind-name">MFI</div>
+                        <div class="ind-value" id="val-mfi">--</div>
+                        <div class="ind-gauge">
+                            <div class="gauge-fill" id="gauge-mfi"></div>
+                        </div>
+                        <div class="ind-signal" id="sig-mfi">--</div>
+                    </div>
+                    <div class="indicator-card momentum-card" id="ind-momentum">
+                        <div class="ind-name">⚡ Momentum Score</div>
+                        <div class="ind-value big" id="val-momentum">0</div>
+                        <div class="momentum-bar-container">
+                            <div class="momentum-bar" id="momentum-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOTTOM LEFT: POSITIONS & TRADES -->
+            <section class="panel trades-panel" id="trades-panel">
+                <div class="panel-header">
+                    <h2>💼 Vị Thế & Giao Dịch</h2>
+                    <div class="panel-tabs">
+                        <button class="tab-btn active" data-tab="positions" id="tab-positions">Vị Thế</button>
+                        <button class="tab-btn" data-tab="history" id="tab-history">Lịch Sử</button>
+                    </div>
+                </div>
+                <div class="tab-content active" id="positions-content">
+                    <div class="positions-list" id="positions-list">
+                        <div class="empty-state">
+                            <span class="empty-icon">📭</span>
+                            <span>Chưa có vị thế nào</span>
+                        </div>
+                    </div>
+                    <div class="trade-actions">
+                        <button class="btn btn-buy" id="btn-buy" onclick="openTrade('buy')">
+                            ▲ MUA
+                        </button>
+                        <button class="btn btn-sell" id="btn-sell" onclick="openTrade('sell')">
+                            ▼ BÁN
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-content" id="history-content">
+                    <div class="trades-table" id="trades-table">
+                        <div class="empty-state">
+                            <span class="empty-icon">📋</span>
+                            <span>Chưa có giao dịch</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOTTOM RIGHT: BACKTEST -->
+            <section class="panel backtest-panel" id="backtest-panel">
+                <div class="panel-header">
+                    <h2>🧪 Backtest</h2>
+                    <div class="backtest-controls">
+                        <select id="backtest-days" class="select-dark">
+                            <option value="30">30 ngày</option>
+                            <option value="60">60 ngày</option>
+                            <option value="90" selected>90 ngày</option>
+                            <option value="180">180 ngày</option>
+                        </select>
+                        <select id="backtest-strategy" class="select-dark">
+                            <option value="technical">Kỹ thuật</option>
+                            <option value="ai">Trí tuệ nhân tạo (AI)</option>
+                        </select>
+                        <button class="btn btn-sm btn-accent" id="btn-backtest" onclick="runBacktest()">
+                            ▶ Chạy
+                        </button>
+                    </div>
+                </div>
+                <div class="backtest-content" id="backtest-content">
+                    <div class="backtest-results" id="backtest-results" style="display:none;">
+                        <div class="bt-stats" id="bt-stats">
+                            <!-- Filled by JS -->
+                        </div>
+                        <div class="bt-chart-container">
+                            <canvas id="equity-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="backtest-empty" id="backtest-empty">
+                        <div class="empty-state">
+                            <span class="empty-icon">🧪</span>
+                            <span>Chọn tham số và nhấn "Chạy" để backtest</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SIGNAL LOG -->
+        <section class="panel signal-log-panel" id="signal-log-panel">
+            <div class="panel-header">
+                <h2>📡 Nhật Ký Tín Hiệu</h2>
+                <button class="btn btn-sm btn-ghost" id="btn-clear-signals" onclick="clearSignalLog()">Xóa</button>
+            </div>
+            <div class="signal-log" id="signal-log">
+                <div class="signal-entry info">
+                    <span class="signal-time">--:--:--</span>
+                    <span class="signal-text">Hệ thống đang khởi động...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATABRICKS & MLFLOW PANEL -->
+        <section class="panel databricks-panel" id="databricks-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>🔷 Databricks & MLflow</h2>
+                    <span class="db-status-badge" id="db-status-badge">Đang kiểm tra...</span>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button class="btn btn-sm btn-ghost" id="btn-db-refresh" onclick="checkDatabricksStatus()">🔄 Kiểm tra</button>
+                    <a class="btn btn-sm btn-databricks" id="btn-db-open" href="#" target="_blank" title="Mở Databricks Workspace">
+                        ↗ Mở Databricks
+                    </a>
+                </div>
+            </div>
+            <div class="databricks-content">
+                <!-- Connection Status Row -->
+                <div class="db-status-row" id="db-status-row">
+                    <div class="db-status-item">
+                        <span class="db-dot" id="db-dot-sql"></span>
+                        <span class="db-label">SQL Warehouse</span>
+                        <span class="db-value" id="db-sql-status">--</span>
+                    </div>
+                    <div class="db-status-item">
+                        <span class="db-dot" id="db-dot-mlflow"></span>
+                        <span class="db-label">MLflow</span>
+                        <span class="db-value" id="db-mlflow-status">--</span>
+                    </div>
+                    <div class="db-status-item">
+                        <span class="db-dot" id="db-dot-delta"></span>
+                        <span class="db-label">Delta Lake</span>
+                        <span class="db-value" id="db-delta-status">--</span>
+                    </div>
+                </div>
+
+                <!-- Sync Actions -->
+                <div class="db-sync-row">
+                    <div class="db-sync-group">
+                        <span class="db-sync-label">📤 Đồng bộ dữ liệu</span>
+                        <div class="db-sync-actions">
+                            <select id="db-sync-symbol" class="select-dark">
+                                <option value="BTC/USDT">BTC/USDT</option>
+                                <option value="ETH/USDT">ETH/USDT</option>
+                            </select>
+                            <select id="db-sync-days" class="select-dark">
+                                <option value="7">7 ngày</option>
+                                <option value="30" selected>30 ngày</option>
+                                <option value="90">90 ngày</option>
+                            </select>
+                            <button class="btn btn-sm btn-accent" id="btn-sync-data" onclick="syncDataToDatabricks()">
+                                Sync OHLCV
+                            </button>
+                            <button class="btn btn-sm btn-ghost" id="btn-sync-trades" onclick="syncTradesToDatabricks()">
+                                Sync Trades
+                            </button>
+                        </div>
+                    </div>
+                    <div class="db-sync-result" id="db-sync-result"></div>
+                </div>
+
+                <!-- MLflow Experiments Table -->
+                <div class="db-experiments-section">
+                    <div class="db-experiments-header">
+                        <span class="db-sync-label">🧪 MLflow Experiments</span>
+                        <button class="btn btn-sm btn-ghost" onclick="loadMLflowExperiments()">Tải lại</button>
+                    </div>
+                    <div class="db-experiments-table" id="db-experiments-table">
+                        <div class="empty-state" style="padding: 16px;">
+                            <span class="empty-icon">📊</span>
+                            <span>Chưa có experiment. Train model để tạo experiment đầu tiên.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-text" id="loading-text">Đang tải...</div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/websocket.js?v=6"></script>
+    <script src="/static/js/charts.js?v=6"></script>
+    <script src="/static/js/app.js?v=6"></script>
+</body>
+
+</html>

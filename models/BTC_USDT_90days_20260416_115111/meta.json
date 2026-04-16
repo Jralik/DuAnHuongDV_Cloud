@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-04-16T11:52:37.715952",
+  "data_points": 1526,
+  "features_count": 104,
+  "models": {
+    "xgboost": {
+      "accuracy": 0.4837,
+      "f1": 0.4104
+    },
+    "random_forest": {
+      "accuracy": 0.4869,
+      "f1": 0.5047
+    },
+    "lstm": {
+      "accuracy": 0.4767,
+      "f1": 0.4906
+    }
+  }
+}

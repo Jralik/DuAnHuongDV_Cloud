@@ -1,0 +1,66 @@
+{
+  "initial_capital": 10000.0,
+  "cash": 9983.3170984411,
+  "trade_history": [
+    {
+      "symbol": "ETH/USDT",
+      "side": "sell",
+      "entry_price": 2356.6,
+      "exit_price": 2356.42,
+      "size": 1.273032,
+      "pnl": -5.77,
+      "pnl_pct": -0.19,
+      "entry_time": "2026-04-16T12:57:00.755899",
+      "exit_time": "2026-04-16T12:57:57.128444",
+      "reason": "Thủ công",
+      "stop_loss": 2391.12,
+      "take_profit": 2304.83
+    },
+    {
+      "symbol": "BTC/USDT",
+      "side": "buy",
+      "entry_price": 75048.0,
+      "exit_price": 74924.99,
+      "size": 0.039974,
+      "pnl": -10.91,
+      "pnl_pct": -0.36,
+      "entry_time": "2026-04-16T12:56:14.514320",
+      "exit_time": "2026-04-16T13:42:48.286740",
+      "reason": "Thủ công",
+      "stop_loss": 74132.78,
+      "take_profit": 76420.83
+    }
+  ],
+  "equity_history": [
+    {
+      "timestamp": "2026-04-16T12:55:23.758066",
+      "equity": 10000.0,
+      "cash": 10000.0,
+      "positions_value": 0
+    },
+    {
+      "timestamp": "2026-04-16T12:56:14.514330",
+      "equity": 10000.0,
+      "cash": 7000.03,
+      "positions_value": 2999.97
+    },
+    {
+      "timestamp": "2026-04-16T12:57:00.755904",
+      "equity": 10000.09,
+      "cash": 4000.0,
+      "positions_value": 6000.08
+    },
+    {
+      "timestamp": "2026-04-16T12:57:57.128459",
+      "equity": 9994.31,
+      "cash": 6994.26,
+      "positions_value": 3000.05
+    },
+    {
+      "timestamp": "2026-04-16T13:42:48.286763",
+      "equity": 9983.32,
+      "cash": 9983.32,
+      "positions_value": 0
+    }
+  ]
+}
