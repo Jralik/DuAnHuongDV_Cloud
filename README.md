@@ -77,6 +77,7 @@ Hệ thống dự đoán **hướng giá sau 24 giờ tới** (target_periods = 
 
 4. **Ngưỡng biến động động (`dynamic_threshold`)** được tính bằng trung bình trượt 24 chu kỳ của `atr_pct`:
    <img width="492" height="118" alt="image" src="https://github.com/user-attachments/assets/ba69c157-6329-45d3-9c0f-8f71a609dae4" />
+   
    *(Nếu chưa đủ 24 nến để tính trung bình trượt, hệ thống sẽ sử dụng giá trị mặc định là $0.005$ hay $0.5\%$).*
 
 - Ngưỡng biến động động (`dynamic_threshold`) = `ATR % trung bình 24 nến * 1.0`
