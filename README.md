@@ -75,7 +75,7 @@ Hệ thống dự đoán **hướng giá sau 24 giờ tới** (target_periods = 
 3. **Tỷ lệ phần trăm ATR (`atr_pct`)** so với giá đóng cửa để chuẩn hóa biến động:
    $$\text{ATRPct}_t = \frac{ATR_t}{Close_t}$$
 
-4. Ngưỡng biến động động (`dynamic_threshold`)** được tính bằng trung bình trượt 24 chu kỳ của `atr_pct`:
+4. **Ngưỡng biến động động (`dynamic_threshold`)** được tính bằng trung bình trượt 24 chu kỳ của `atr_pct`:
    $$\text{dynamic\_threshold}_t = \frac{1}{24} \sum_{i=0}^{23} \text{atr\_pct}_{t-i}$$
    *(Nếu chưa đủ 24 nến để tính trung bình trượt, hệ thống sẽ sử dụng giá trị mặc định là $0.005$ hay $0.5\%$).*
 
