@@ -66,7 +66,7 @@ Hệ thống dự đoán **hướng giá sau 24 giờ tới** (target_periods = 
 #### 🧮 Cách tính toán ATR (Average True Range) và Ngưỡng động:
 
 1. **True Range (TR_t)** của nến hiện tại được tính bằng giá trị lớn nhất trong 3 khoảng cách sau:
-   TR_t = max(High_t - Low_t, |High_t - Close_{t-1}|, |Low_t - Close_{t-1}|)
+   $$TR_t = \max \left( High_t - Low_t, \, \left| High_t - Close_{t-1} \right|, \, \left| Low_t - Close_{t-1} \right| \right)$$
    *Trong đó: High_t, Low_t là giá cao nhất, thấp nhất của nến hiện tại; Close_{t-1} là giá đóng cửa nến trước.*
 
 2. **Average True Range (ATR_t)** chu kỳ 14 được làm mịn theo phương pháp của Wilder:
