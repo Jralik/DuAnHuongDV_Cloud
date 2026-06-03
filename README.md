@@ -1,4 +1,4 @@
-<img width="492" height="118" alt="image" src="https://github.com/user-attachments/assets/d1e1713c-bc69-4c12-b74e-9506923a277e" /># 🤖 AI Trading System — Model Documentation
+# 🤖 AI Trading System — Model Documentation
 
 Tài liệu mô tả toàn bộ pipeline học máy của hệ thống, từ thu thập dữ liệu thô (raw), qua feature engineering, đến training và dự đoán bằng mô hình Ensemble.
 
