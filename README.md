@@ -65,19 +65,19 @@ Hệ thống dự đoán **hướng giá sau 24 giờ tới** (target_periods = 
 
 #### 🧮 Cách tính toán ATR (Average True Range) và Ngưỡng động:
 
-1. **True Range (TR_t)** của nến hiện tại được tính bằng giá trị lớn nhất trong 3 khoảng cách sau:
+1. **True Range ($TR_t$)** của nến hiện tại được tính bằng giá trị lớn nhất trong 3 khoảng cách sau:
    $$TR_t = \max \left( High_t - Low_t, \, \left| High_t - Close_{t-1} \right|, \, \left| Low_t - Close_{t-1} \right| \right)$$
-   *Trong đó: High_t, Low_t là giá cao nhất, thấp nhất của nến hiện tại; Close_{t-1} là giá đóng cửa nến trước.*
+   *Trong đó: $High_t$, $Low_t$ là giá cao nhất, thấp nhất của nến hiện tại; $Close_{t-1}$ là giá đóng cửa nến trước.*
 
-2. **Average True Range (ATR_t)** chu kỳ 14 được làm mịn theo phương pháp của Wilder:
-   ATR_t = (ATR_{t-1} * 13 + TR_t)/14
+2. **Average True Range ($ATR_t$)** chu kỳ 14 được làm mịn theo phương pháp của Wilder:
+   $$ATR_t = \frac{ATR_{t-1} \times 13 + TR_t}{14}$$
 
 3. **Tỷ lệ phần trăm ATR (`atr_pct`)** so với giá đóng cửa để chuẩn hóa biến động:
-   atr_pct_t = ATR_t / Close_t
+   $$\text{atr\_pct}_t = \frac{ATR_t}{Close_t}$$
 
 4. **Ngưỡng biến động động (`dynamic_threshold`)** được tính bằng trung bình trượt 24 chu kỳ của `atr_pct`:
-   dynamic_threshold_t = (atr_pct_0 + atr_pct_1 + ... + atr_pct_23) / 24
-   *(Nếu chưa đủ 24 nến để tính trung bình trượt, hệ thống sẽ sử dụng giá trị mặc định là 0.005 hay 0.5\%).*
+   $$\text{dynamic\_threshold}_t = \frac{1}{24} \sum_{i=0}^{23} \text{atr\_pct}_{t-i}$$
+   *(Nếu chưa đủ 24 nến để tính trung bình trượt, hệ thống sẽ sử dụng giá trị mặc định là $0.005$ hay $0.5\%$).*
 
 - Ngưỡng biến động động (`dynamic_threshold`) = `ATR % trung bình 24 nến * 1.0`
 
