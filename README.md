@@ -1,7 +1,10 @@
 # 🤖 HỆ THỐNG MÔ PHỎNG GIAO DỊCH CRYPTO VỚI DỰ ĐOÁN CỦA AI 
 DASHBOARD
+
 <img width="1919" height="676" alt="Screenshot 2026-06-05 214303" src="https://github.com/user-attachments/assets/54d309c9-07a2-4e8b-9832-ade44dc6dec4" />
+
 BACKTESTING
+
 <img width="652" height="417" alt="Screenshot 2026-06-05 155508" src="https://github.com/user-attachments/assets/a8bd9dab-6fd5-4d89-8b2f-9e2e03eafd17" />
 
 ## 1. 📥 Data (Dữ liệu)
