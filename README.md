@@ -1,34 +1,8 @@
-# 🤖 AI Trading System — Model Documentation
-
-Tài liệu mô tả toàn bộ pipeline học máy của hệ thống, từ thu thập dữ liệu thô (raw), qua feature engineering, đến training và dự đoán bằng mô hình Ensemble.
-
----
-
-## 📐 Tổng quan Kiến trúc
-
-```
-         Sàn giao dịch (Binance / OKX / Kraken)
-                         │
-                         ▼
-              [01] DATA INGESTION (Bronze)
-              Thu thập OHLCV → Delta Lake Bronze
-                         │
-                         ▼
-          [02] FEATURE ENGINEERING (Silver)
-          Tính Technical Indicators + ML Features
-          → Delta Lake Silver
-                         │
-                         ▼
-              [03] MODEL TRAINING (Gold)
-          XGBoost  +  Random Forest  +  LSTM
-          → MLflow Tracking (Databricks)
-                         │
-                         ▼
-            [04] ENSEMBLE PREDICTION
-          Weighted Voting → Tín hiệu MUA / BÁN / GIỮ
-```
-
----
+# 🤖 HỆ THỐNG MÔ PHỎNG GIAO DỊCH CRYPTO VỚI DỰ ĐOÁN CỦA AI 
+DASHBOARD
+<img width="969" height="468" alt="image" src="https://github.com/user-attachments/assets/8126cb92-81d1-40f7-8a7e-4636c72216fe" />
+BACKTESTING
+<img width="652" height="417" alt="Screenshot 2026-06-05 155508" src="https://github.com/user-attachments/assets/a8bd9dab-6fd5-4d89-8b2f-9e2e03eafd17" />
 
 ## 1. 📥 Data (Dữ liệu)
 
