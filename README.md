@@ -436,30 +436,6 @@ models/
     └── meta.json      ← Training info (best_threshold, weights, metrics)
 ```
 
----
-
-## 8. ⚙️ Configuration Nhanh
-
-```python
-# config.py (trích)
-
-# Số nến tương lai để tính target
-target_periods = 24         # 24 giờ tới (1 ngày trên khung 1H)
-
-# Ngưỡng return tối thiểu (Dùng ATR Dynamic Threshold trong Databricks, config local chỉ fallback)
-min_return_thresholds = {
-    "BTC/USDT": 0.005,
-    "ETH/USDT": 0.008,
-    "default": 0.005,
-}
-
-# Ensemble weights (Đồng bộ với Databricks)
-ensemble_weights = {
-    "xgboost": 0.25,
-    "random_forest": 0.25,
-    "lstm": 0.50,
-}
-
 # Ngưỡng signal (Sẽ bị override bằng best_threshold từ meta.json)
 confidence_threshold = 0.50
 ```
